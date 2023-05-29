@@ -11,7 +11,7 @@ public:
     Node* right;
     int height;
 
-    Node(int value) { //ghgf
+    Node(int value) {
         this->value = value;
         left = nullptr;
         right = nullptr;
