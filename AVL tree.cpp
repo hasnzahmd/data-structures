@@ -11,13 +11,14 @@ public:
     Node* right;
     int height;
 
-    Node(int value) {
+    Node(int value) { //ghgf
         this->value = value;
         left = nullptr;
         right = nullptr;
         height = 1;
     }
 };
+
 
 // AVL tree class
 class AVLTree {
