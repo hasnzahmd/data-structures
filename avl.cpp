@@ -13,8 +13,8 @@ public:
 
     Node(int value) {
         this->value = value;
-        left = nullptr;
-        right = nullptr;
+        left = NULL;
+        right = NULL;
         height = 1;
     }
 };
@@ -25,94 +25,99 @@ public:
     Node* root;
 
     AVLTree() {
-        root = nullptr;
+        root = NULL;
     }
 
     // Get the height of a node
     int getHeight(Node* node) {
-        if (node == nullptr)
+        if (node == NULL)
             return 0;
         return node->height;
     }
 
     // Get the balance factor of a node
     int getBalance(Node* node) {
-        if (node == nullptr)
+        if (node == NULL)
             return 0;
         return getHeight(node->left) - getHeight(node->right);
     }
 
+    //update height of each node
+    int updateHeight(Node *root)
+    {
+        return max(getHeight(root->left), getHeight(root->right)) + 1;
+    }
+
     // Perform right rotation
-    Node* rightRotate(Node* z) {
-        Node* y = z->left;
-        Node* T3 = y->right;
+    Node* rightRotate(Node* root) {
+        Node* new_root = root->left;
+        Node* temp = new_root->right;
 
-        y->right = z;
-        z->left = T3;
+        new_root->right = root;
+        root->left = temp;
 
-        z->height = 1 + max(getHeight(z->left), getHeight(z->right));
-        y->height = 1 + max(getHeight(y->left), getHeight(y->right));
+        root->height = updateHeight(root);
+        new_root->height = updateHeight(new_root);
 
-        return y;
+        return new_root;
     }
 
     // Perform left rotation
-    Node* leftRotate(Node* z) {
-        Node* y = z->right;
-        Node* T2 = y->left;
+    Node* leftRotate(Node* root) {
+        Node* new_root = root->right;
+        Node* temp = new_root->left;
 
-        y->left = z;
-        z->right = T2;
+        new_root->left = root;
+        root->right = temp;
 
-        z->height = 1 + max(getHeight(z->left), getHeight(z->right));
-        y->height = 1 + max(getHeight(y->left), getHeight(y->right));
-
-        return y;
+        root->height = updateHeight(root);
+        new_root->height = updateHeight(new_root);
+        return new_root;
     }
 
     // Insert a node into the AVL tree
-    Node* insert(Node* node, int value) {
-        if (node == nullptr)
+    Node* insert(Node* root, int value) {
+        if (root == NULL)
             return new Node(value);
 
-        if (value < node->value)
-            node->left = insert(node->left, value);
+        if (value < root->value)
+            root->left = insert(root->left, value);
         else
-            node->right = insert(node->right, value);
+            root->right = insert(root->right, value);
 
-        node->height = 1 + max(getHeight(node->left), getHeight(node->right));
+        root->height = updateHeight(root);
 
-        int balance = getBalance(node);
+        int balance = getBalance(root);
 
         // Left Left Case
-        if (balance > 1 && value < node->left->value)
-            return rightRotate(node);
+        if (balance > 1 && value < root->left->value)
+            return rightRotate(root);
 
         // Right Right Case
-        if (balance < -1 && value > node->right->value)
-            return leftRotate(node);
+        if (balance < -1 && value > root->right->value)
+            return leftRotate(root);
 
         // Left Right Case
-        if (balance > 1 && value > node->left->value) {
-            node->left = leftRotate(node->left);
-            return rightRotate(node);
+        if (balance > 1 && value > root->left->value) {
+            root->left = leftRotate(root->left);
+            return rightRotate(root);
         }
 
         // Right Left Case
-        if (balance < -1 && value < node->right->value) {
-            node->right = rightRotate(node->right);
-            return leftRotate(node);
+        if (balance < -1 && value < root->right->value) {
+            root->right = rightRotate(root->right);
+            return leftRotate(root);
         }
 
-        return node;
+        return root;
     }
 
     // Inorder traversal of the AVL tree
-    void inorder(Node* node) {
-        if (node) {
-            inorder(node->left);
-            cout << node->value << " ";
-            inorder(node->right);
+    void inorder(Node* root) {
+        if (root+) {
+            inorder(root->left);
+            cout << root->value << " ";
+            inorder(root->right);
         }
     }
 };
