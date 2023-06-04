@@ -1,4 +1,4 @@
-//AVL Tree Data 35,50,40,25,30,60,78,20,28
+//AVL Tree value 35,50,40,25,30,60,78,20,28
 
 #include <iostream>
 using namespace std;
@@ -112,6 +112,15 @@ public:
         return root;
     }
 
+    // Preorder traversal of the AVL tree
+    void preorder(Node* root) {
+        if (root) {
+            cout << root->value << " ";
+            preorder(root->left);
+            preorder(root->right);
+        }
+    }
+
     // Inorder traversal of the AVL tree
     void inorder(Node* root) {
         if (root) {
@@ -120,6 +129,46 @@ public:
             inorder(root->right);
         }
     }
+
+    // Postorder traversal of the AVL tree
+    void postorder(Node* root) {
+        if (root) {
+            postorder(root->left);
+            postorder(root->right);
+            cout << root->value << " ";
+        }
+    }
+
+    //******************************************************************//
+
+    void printUtil(Node *root, int space, int count)
+    { // using reverse inorder
+        if (!root)
+            return;
+
+        // Increase distance between levels
+        space += count;
+
+        printUtil(root->right, space, count);
+
+        cout << endl;
+        for (int i = count; i < space; i++)
+            cout << " ";
+        cout << root->value << "\n";
+
+        printUtil(root->left, space, count);
+    }
+
+    void print(Node *root)
+    {
+        if(!root){
+            cout << "Tree is empty!\n";
+            return;
+        }
+        printUtil(root, 0, 10);
+    }
+
+//******************************************************************//
 };
 
 int main() {
@@ -136,10 +185,19 @@ int main() {
         avlTree.root = avlTree.insert(avlTree.root, value);
     }
 
-    // Inorder traversal of the AVL tree
+    cout << "\nPreorder traversal of the AVL tree: ";
+    avlTree.preorder(avlTree.root);
+    cout << endl;
+    
     cout << "Inorder traversal of the AVL tree: ";
     avlTree.inorder(avlTree.root);
     cout << endl;
+
+    cout << "Postorder traversal of the AVL tree: ";
+    avlTree.postorder(avlTree.root);
+    cout << endl<<endl;
+
+    avlTree.print(avlTree.root);
 
     return 0;
 }
